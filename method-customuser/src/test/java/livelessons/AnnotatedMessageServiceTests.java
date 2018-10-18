@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class AnnotatedMessageServiceTests {
+
 	@Autowired
 	MessageService messageService;
 
@@ -34,8 +35,7 @@ public class AnnotatedMessageServiceTests {
 	@Test
 	@WithUserDetails("josh@example.com") // correct type
 	public void grated() {
-		assertThatCode(() -> this.messageService.getMessage())
-				.doesNotThrowAnyException();
+		assertThatCode(() -> this.messageService.getMessage()).doesNotThrowAnyException();
 	}
 
 	@Test
@@ -48,8 +48,7 @@ public class AnnotatedMessageServiceTests {
 	@Test
 	@WithMockMessageUser
 	public void grantedWithMock() {
-		assertThatCode(() -> this.messageService.getMessage())
-				.doesNotThrowAnyException();
+		assertThatCode(() -> this.messageService.getMessage()).doesNotThrowAnyException();
 	}
 
 	@Test
@@ -58,4 +57,5 @@ public class AnnotatedMessageServiceTests {
 		assertThatCode(() -> this.messageService.getMessage())
 				.isInstanceOf(AccessDeniedException.class);
 	}
+
 }

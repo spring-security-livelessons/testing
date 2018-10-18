@@ -7,4 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @WithMockUser(roles = "ADMIN")
 @Retention(RetentionPolicy.RUNTIME)
-public @interface WithAdmin {}
+public @interface WithAdmin {
+
+}

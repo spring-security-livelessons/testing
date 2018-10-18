@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AnnotatedMessageServiceTests {
+
 	@Autowired
 	MessageService messageService;
 
@@ -35,24 +36,19 @@ public class AnnotatedMessageServiceTests {
 	@Test
 	@WithUserDetails
 	public void getMessageWhenAuthorizedThenGranted() {
-		assertThatCode(() -> this.messageService.getMessage())
-				.doesNotThrowAnyException();
+		assertThatCode(() -> this.messageService.getMessage()).doesNotThrowAnyException();
 	}
 
 	@Test
 	@WithUserDetails("admin")
 	public void getMessageWhenAdminThenGranted() {
-		assertThatCode(() -> this.messageService.getMessage())
-				.doesNotThrowAnyException();
+		assertThatCode(() -> this.messageService.getMessage()).doesNotThrowAnyException();
 	}
 
 	@Autowired
 	UserDetailsManager users;
 
-	UserDetails test = User
-			.withUsername("test")
-			.password("password")
-			.roles("TEST")
+	UserDetails test = User.withUsername("test").password("password").roles("TEST")
 			.build();
 
 	@Before
@@ -67,10 +63,9 @@ public class AnnotatedMessageServiceTests {
 
 	@Test
 	// @WithUserDetails("test") // fails
-	@WithUserDetails(value = "test",
-		setupBefore = TestExecutionEvent.TEST_METHOD)
+	@WithUserDetails(value = "test", setupBefore = TestExecutionEvent.TEST_METHOD)
 	public void testUser() {
-		assertThatCode(() -> this.messageService.getMessage())
-				.doesNotThrowAnyException();
+		assertThatCode(() -> this.messageService.getMessage()).doesNotThrowAnyException();
 	}
+
 }

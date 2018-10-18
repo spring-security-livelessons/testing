@@ -1,11 +1,15 @@
 package livelessons.user;
 
 public class MessageUser {
+
 	private Long id;
+
 	private String email;
+
 	private String password;
 
-	public MessageUser() {}
+	public MessageUser() {
+	}
 
 	public MessageUser(Long id, String email, String password) {
 		this.id = id;
@@ -42,4 +46,5 @@ public class MessageUser {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 }

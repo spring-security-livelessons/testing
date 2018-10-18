@@ -38,25 +38,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 public class MockMvcTests {
+
 	@Autowired
 	MockMvc mockMvc;
 
 	@Test
 	public void indexWhenNotAuthenticatedThenRedirectsToLoginPage() throws Exception {
-		MockHttpServletRequestBuilder request = get("/")
-				.accept(MediaType.TEXT_HTML);
-		this.mockMvc.perform(request)
-				.andExpect(status().is3xxRedirection())
+		MockHttpServletRequestBuilder request = get("/").accept(MediaType.TEXT_HTML);
+		this.mockMvc.perform(request).andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("http://localhost/login"));
 	}
 
 	@Test
 	public void indexWhenUserThenOk() throws Exception {
-		MockHttpServletRequestBuilder request = get("/")
-				.accept(MediaType.TEXT_HTML)
+		MockHttpServletRequestBuilder request = get("/").accept(MediaType.TEXT_HTML)
 				.with(user("rob"));
-		this.mockMvc.perform(request)
-				.andExpect(status().isOk());
+		this.mockMvc.perform(request).andExpect(status().isOk());
 	}
 
 	@Autowired
@@ -65,104 +62,87 @@ public class MockMvcTests {
 	@Test
 	public void indexWhenUserDetailsServiceThenOk() throws Exception {
 		UserDetails user = this.users.loadUserByUsername("user");
-		MockHttpServletRequestBuilder request = get("/")
-				.accept(MediaType.TEXT_HTML)
+		MockHttpServletRequestBuilder request = get("/").accept(MediaType.TEXT_HTML)
 				.with(user(user));
-		this.mockMvc.perform(request)
-				.andExpect(status().isOk());
+		this.mockMvc.perform(request).andExpect(status().isOk());
 	}
 
 	@Test
 	public void indexWhenUserDetailsThenOk() throws Exception {
 		UserDetails user = new User("user", "password",
 				AuthorityUtils.createAuthorityList("ROLE_USER"));
-		MockHttpServletRequestBuilder request = get("/")
-				.accept(MediaType.TEXT_HTML)
+		MockHttpServletRequestBuilder request = get("/").accept(MediaType.TEXT_HTML)
 				.with(user(user));
-		this.mockMvc.perform(request)
-				.andExpect(status().isOk());
+		this.mockMvc.perform(request).andExpect(status().isOk());
 	}
 
 	@Test
 	public void indexWhenAuthenticationThenOk() throws Exception {
 		UserDetails user = new User("user", "password",
 				AuthorityUtils.createAuthorityList("ROLE_USER"));
-		Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
-		MockHttpServletRequestBuilder request = get("/")
-				.accept(MediaType.TEXT_HTML)
+		Authentication auth = new UsernamePasswordAuthenticationToken(user,
+				user.getPassword(), user.getAuthorities());
+		MockHttpServletRequestBuilder request = get("/").accept(MediaType.TEXT_HTML)
 				.with(authentication(auth));
-		this.mockMvc.perform(request)
-				.andExpect(status().isOk());
+		this.mockMvc.perform(request).andExpect(status().isOk());
 	}
 
 	@Test
 	public void indexWhenSecurityContextThenOk() throws Exception {
 		UserDetails user = new User("user", "password",
 				AuthorityUtils.createAuthorityList("ROLE_USER"));
-		Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+		Authentication auth = new UsernamePasswordAuthenticationToken(user,
+				user.getPassword(), user.getAuthorities());
 		SecurityContext context = new SecurityContextImpl();
 		context.setAuthentication(auth);
-		MockHttpServletRequestBuilder request = get("/")
-				.accept(MediaType.TEXT_HTML)
+		MockHttpServletRequestBuilder request = get("/").accept(MediaType.TEXT_HTML)
 				.with(securityContext(context));
-		this.mockMvc.perform(request)
-				.andExpect(status().isOk());
+		this.mockMvc.perform(request).andExpect(status().isOk());
 	}
 
 	@Test
 	@WithMockUser
 	public void indexWhenWithMockUserThenOk() throws Exception {
+		this.mockMvc.perform(get("/")).andExpect(status().isOk());
+	}
+
+	@Test
+	public void transferWhenNoCsrfTokenThenForbidden() throws Exception {
+		MockHttpServletRequestBuilder request = post("/transfer").param("amount", "0")
+				.accept(MediaType.TEXT_HTML).with(user("rob"));
+		this.mockMvc.perform(request).andExpect(status().isForbidden());
+	}
+
+	@Test
+	public void transferWhenCsrfTokenThenRedirectOnPost() throws Exception {
+		MockHttpServletRequestBuilder request = post("/transfer").param("amount", "0")
+				.accept(MediaType.TEXT_HTML).with(user("rob")).with(csrf());
+		this.mockMvc.perform(request).andExpect(status().is3xxRedirection());
+	}
+
+	@Test
+	public void loginWhenSuccessThenAuthenticated() throws Exception {
+		this.mockMvc.perform(formLogin()).andExpect(authenticated());
+	}
+
+	@Test
+	public void loginWhenFailThenNotAuthenticated() throws Exception {
+		this.mockMvc.perform(formLogin().user("invalid")).andExpect(unauthenticated());
+	}
+
+	@Test
+	@WithMockUser
+	public void validateInputName() throws Exception {
 		this.mockMvc.perform(get("/"))
-				.andExpect(status().isOk());
+				.andExpect(content().string(containsString("amount")));
 	}
 
 	@Test
-	public void transferWhenNoCsrfTokenThenForbidden() throws  Exception{
-		MockHttpServletRequestBuilder request = post("/transfer")
-				.param("amount", "0")
-				.accept(MediaType.TEXT_HTML)
-				.with(user("rob"));
-		this.mockMvc.perform(request)
-				.andExpect(status().isForbidden());
-	}
-
-	@Test
-	public void transferWhenCsrfTokenThenRedirectOnPost() throws  Exception{
-		MockHttpServletRequestBuilder request = post("/transfer")
-				.param("amount", "0")
-				.accept(MediaType.TEXT_HTML)
-				.with(user("rob"))
+	@WithMockUser
+	public void validateTransfer() throws Exception {
+		MockHttpServletRequestBuilder request = post("/transfer").param("amount", "10")
 				.with(csrf());
-		this.mockMvc.perform(request)
-				.andExpect(status().is3xxRedirection());
+		this.mockMvc.perform(request).andExpect(status().is3xxRedirection());
 	}
 
-	@Test
-	public void loginWhenSuccessThenAuthenticated() throws  Exception{
-		this.mockMvc.perform(formLogin())
-				.andExpect(authenticated());
-	}
-
-	@Test
-	public void loginWhenFailThenNotAuthenticated() throws  Exception{
-		this.mockMvc.perform(formLogin().user("invalid"))
-				.andExpect(unauthenticated());
-	}
-
-@Test
-@WithMockUser
-public void validateInputName() throws Exception {
-	this.mockMvc.perform(get("/"))
-			.andExpect(content().string(containsString("amount")));
-}
-
-@Test
-@WithMockUser
-public void validateTransfer() throws Exception {
-	MockHttpServletRequestBuilder request = post("/transfer")
-			.param("amount", "10")
-			.with(csrf());
-	this.mockMvc.perform(request)
-			.andExpect(status().is3xxRedirection());
-}
 }

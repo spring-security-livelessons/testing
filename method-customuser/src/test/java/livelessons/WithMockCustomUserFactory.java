@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
  */
 public class WithMockCustomUserFactory
 		implements WithSecurityContextFactory<WithMockMessageUser> {
+
 	@Override
 	public SecurityContext createSecurityContext(WithMockMessageUser annotation) {
 		UserRepository users = mock(UserRepository.class);
@@ -37,4 +38,5 @@ public class WithMockCustomUserFactory
 	private MessageUser createUser(WithMockMessageUser annotation) {
 		return new MessageUser(annotation.id(), annotation.value(), "notused");
 	}
+
 }

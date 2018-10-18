@@ -5,10 +5,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @PreAuthorize("hasRole('ADMIN')")
-public class HelloSecurityMessageService implements MessageService{
+public class HelloSecurityMessageService implements MessageService {
 
 	@Override
 	public String getMessage() {
 		return "Hello Security!";
 	}
+
 }

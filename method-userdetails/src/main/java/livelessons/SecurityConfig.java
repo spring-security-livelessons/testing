@@ -12,16 +12,11 @@ public class SecurityConfig {
 
 	@Bean
 	UserDetailsService userDetailsService() {
-		UserDetails admin = User.withDefaultPasswordEncoder()
-				.username("admin")
-				.password("password")
-				.roles("USER", "ADMIN")
-				.build();
-		UserDetails user = User.withDefaultPasswordEncoder()
-				.username("user")
-				.password("password")
-				.roles("USER")
-				.build();
+		UserDetails admin = User.withDefaultPasswordEncoder().username("admin")
+				.password("password").roles("USER", "ADMIN").build();
+		UserDetails user = User.withDefaultPasswordEncoder().username("user")
+				.password("password").roles("USER").build();
 		return new InMemoryUserDetailsManager(admin, user);
 	}
+
 }

@@ -16,7 +16,9 @@ import java.lang.annotation.Target;
 @Documented
 @WithSecurityContext(factory = WithMockCustomUserFactory.class)
 public @interface WithMockMessageUser {
+
 	long id() default 1L;
 
 	String value() default "user@example.com";
+
 }

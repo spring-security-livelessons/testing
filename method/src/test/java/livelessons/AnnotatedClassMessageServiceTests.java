@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @WithMockUser(roles = "ADMIN")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AnnotatedClassMessageServiceTests {
+
 	@Autowired
 	MessageService messageService;
 
@@ -32,7 +33,7 @@ public class AnnotatedClassMessageServiceTests {
 
 	@Test
 	public void granted() {
-		assertThatCode(() -> this.messageService.getMessage())
-				.doesNotThrowAnyException();
+		assertThatCode(() -> this.messageService.getMessage()).doesNotThrowAnyException();
 	}
+
 }

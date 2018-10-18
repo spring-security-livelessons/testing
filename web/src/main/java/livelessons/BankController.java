@@ -13,6 +13,7 @@ import java.util.Map;
  */
 @Controller
 public class BankController {
+
 	private double balance = 100.00;
 
 	@PostMapping("/transfer")
@@ -26,4 +27,5 @@ public class BankController {
 		model.put("balance", this.balance);
 		return "index";
 	}
+
 }

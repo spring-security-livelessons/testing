@@ -33,7 +33,7 @@ public class HelloSecurityApplication {
 	}
 
 	@Bean
-	Message message () {
+	Message message() {
 		return new Message(josh(), "Hi Josh!");
 	}
 
@@ -46,4 +46,5 @@ public class HelloSecurityApplication {
 	MessageUser rob() {
 		return new MessageUser(2L, "rob@example.com", "password");
 	}
+
 }

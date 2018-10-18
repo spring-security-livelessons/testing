@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ManualMessageServiceTests {
+
 	@Autowired
 	MessageService messageService;
 
@@ -44,7 +45,7 @@ public class ManualMessageServiceTests {
 		TestingAuthenticationToken authentication = new TestingAuthenticationToken("user",
 				"password", "ROLE_ADMIN");
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		assertThatCode(() -> this.messageService.getMessage())
-				.doesNotThrowAnyException();
+		assertThatCode(() -> this.messageService.getMessage()).doesNotThrowAnyException();
 	}
+
 }

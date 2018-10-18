@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class AnnotatedMessageServiceTests {
+
 	@Autowired
 	MessageService messageService;
 
@@ -37,14 +38,13 @@ public class AnnotatedMessageServiceTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void authorized() {
-		assertThatCode(() -> this.messageService.getMessage())
-				.doesNotThrowAnyException();
+		assertThatCode(() -> this.messageService.getMessage()).doesNotThrowAnyException();
 	}
 
 	@Test
 	@WithAdmin
 	public void meta() {
-		assertThatCode(() -> this.messageService.getMessage())
-				.doesNotThrowAnyException();
+		assertThatCode(() -> this.messageService.getMessage()).doesNotThrowAnyException();
 	}
+
 }

@@ -14,4 +14,5 @@ import java.lang.annotation.Target;
 @Documented
 @WithMockMessageUser("josh@example.com")
 public @interface WithJosh {
+
 }

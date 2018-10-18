@@ -16,7 +16,8 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class 	WebDriverTests {
+public class WebDriverTests {
+
 	@Autowired
 	private WebDriver driver;
 
@@ -31,4 +32,5 @@ public class 	WebDriverTests {
 
 		assertThat(index.balance()).isEqualTo(50);
 	}
+
 }

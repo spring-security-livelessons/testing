@@ -3,10 +3,13 @@ package livelessons.message;
 import livelessons.user.MessageUser;
 
 public class Message {
+
 	private MessageUser to;
+
 	private String text;
 
-	public Message() {}
+	public Message() {
+	}
 
 	public Message(MessageUser to, String text) {
 		this.to = to;
@@ -28,4 +31,5 @@ public class Message {
 	public void setText(String text) {
 		this.text = text;
 	}
+
 }

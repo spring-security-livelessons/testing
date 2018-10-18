@@ -33,16 +33,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ManualTests {
+
 	@Autowired
 	FilterChainProxy springSecurityFilterChain;
 
 	MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
+
 	MockHttpServletResponse response = new MockHttpServletResponse();
+
 	MockFilterChain chain = new MockFilterChain();
 
-	UsernamePasswordAuthenticationToken authentication =
-			new UsernamePasswordAuthenticationToken("user", "password",
-			AuthorityUtils.createAuthorityList("ROLE_USER"));
+	UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+			"user", "password", AuthorityUtils.createAuthorityList("ROLE_USER"));
 
 	@Test
 	public void indexWhenSecurityContextHolderThenUnauthorized() throws Exception {
@@ -51,14 +53,17 @@ public class ManualTests {
 
 		this.springSecurityFilterChain.doFilter(this.request, this.response, this.chain);
 
-		assertThat(this.response.getStatus()).isEqualTo(HttpServletResponse.SC_UNAUTHORIZED);
+		assertThat(this.response.getStatus())
+				.isEqualTo(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 
 	@Test
 	public void indexWhenSetSessionThenUnauthorized() throws Exception {
 		SecurityContext context = SecurityContextHolder.createEmptyContext();
 		context.setAuthentication(this.authentication);
-		this.request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+		this.request.getSession().setAttribute(
+				HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+				context);
 
 		this.springSecurityFilterChain.doFilter(this.request, this.response, this.chain);
 

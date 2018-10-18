@@ -63,4 +63,5 @@ public class IndexPage {
 		this.submit.click();
 		return PageFactory.initElements(this.driver, IndexPage.class);
 	}
+
 }

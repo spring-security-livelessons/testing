@@ -15,4 +15,5 @@ public class BeanMessageService implements MessageService {
 	public Message getMessage() {
 		return this.message;
 	}
+
 }

@@ -11,6 +11,7 @@ import java.util.Collection;
 
 @Component
 public class UserRepositoryUserDetailsService implements UserDetailsService {
+
 	private final UserRepository users;
 
 	public UserRepositoryUserDetailsService(UserRepository users) {
@@ -18,7 +19,8 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username)
+			throws UsernameNotFoundException {
 		MessageUser user = this.users.findByEmail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("Not found");
@@ -27,6 +29,7 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
 	}
 
 	private static class MessageUserDetails extends MessageUser implements UserDetails {
+
 		public MessageUserDetails(MessageUser user) {
 			super(user);
 		}
@@ -60,5 +63,7 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
 		public boolean isEnabled() {
 			return true;
 		}
+
 	}
+
 }

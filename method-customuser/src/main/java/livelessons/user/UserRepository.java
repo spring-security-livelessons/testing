@@ -7,6 +7,7 @@ import java.util.Map;
 
 @Component
 public class UserRepository {
+
 	private Map<String, MessageUser> emailToUser = new HashMap<>();
 
 	public UserRepository(MessageUser... users) {
@@ -18,4 +19,5 @@ public class UserRepository {
 	public MessageUser findByEmail(String email) {
 		return this.emailToUser.get(email);
 	}
+
 }

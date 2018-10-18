@@ -34,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ManualMockMvcTests {
+
 	@Autowired
 	WebApplicationContext context;
 
@@ -43,52 +44,42 @@ public class ManualMockMvcTests {
 	@Test
 	public void contextFails() throws Exception {
 		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-				.addFilters(this.springSecurityFilterChain)
-				.build();
-		UsernamePasswordAuthenticationToken authentication =
-				new UsernamePasswordAuthenticationToken("user", "password",
-						AuthorityUtils.createAuthorityList("ROLE_USER"));
+				.addFilters(this.springSecurityFilterChain).build();
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+				"user", "password", AuthorityUtils.createAuthorityList("ROLE_USER"));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		mockMvc.perform(get("/"))
-				.andExpect(status().isUnauthorized());
+		mockMvc.perform(get("/")).andExpect(status().isUnauthorized());
 	}
 
 	@Test
 	public void sessionWorks() throws Exception {
 		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-				.addFilters(this.springSecurityFilterChain)
-				.build();
-		UsernamePasswordAuthenticationToken authentication =
-				new UsernamePasswordAuthenticationToken("user", "password",
-						AuthorityUtils.createAuthorityList("ROLE_USER"));
+				.addFilters(this.springSecurityFilterChain).build();
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+				"user", "password", AuthorityUtils.createAuthorityList("ROLE_USER"));
 
 		SecurityContext context = new SecurityContextImpl();
 		context.setAuthentication(authentication);
 
 		MockHttpServletRequestBuilder request = get("/")
 				.sessionAttr(SPRING_SECURITY_CONTEXT_KEY, context);
-		mockMvc.perform(request)
-				.andExpect(status().isOk());
+		mockMvc.perform(request).andExpect(status().isOk());
 	}
 
 	@Test
 	public void contextApplySpringSecurity() throws Exception {
 		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-				.apply(springSecurity())
-				.build();
-		UsernamePasswordAuthenticationToken authentication =
-				new UsernamePasswordAuthenticationToken("user", "password",
-						AuthorityUtils.createAuthorityList("ROLE_USER"));
+				.apply(springSecurity()).build();
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+				"user", "password", AuthorityUtils.createAuthorityList("ROLE_USER"));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		mockMvc.perform(get("/"))
-				.andExpect(status().isOk());
+		mockMvc.perform(get("/")).andExpect(status().isOk());
 
-		mockMvc.perform(get("/"))
-				.andExpect(status().isOk());
+		mockMvc.perform(get("/")).andExpect(status().isOk());
 	}
 
 	@Test
@@ -96,4 +87,5 @@ public class ManualMockMvcTests {
 	public void validateInput() {
 
 	}
+
 }
