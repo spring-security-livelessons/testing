@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -22,6 +23,7 @@ public class WebDriverTests {
 	private WebDriver driver;
 
 	@Test
+	@DirtiesContext
 	public void transfer() {
 		IndexPage index = IndexPage.to(this.driver, IndexPage.class);
 		index.assertAt();

@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -139,6 +140,7 @@ public class MockMvcTests {
 
 	@Test
 	@WithMockUser
+	@DirtiesContext
 	public void validateTransfer() throws Exception {
 		MockHttpServletRequestBuilder request = post("/transfer").param("amount", "10")
 				.with(csrf());
